@@ -1,0 +1,255 @@
+openapi: 3.0.0
+info:
+  title: Panini Support API
+  description: API para gestión de tickets de soporte interno — Copa Mundial FIFA 2026
+  version: 1.0.0
+  contact:
+    name: Panini Support Team
+    email: dev@panini-support.com
+
+servers:
+  - url: https://api.panini-support.com/v1
+    description: Producción
+  - url: https://dev.api.panini-support.com/v1
+    description: Desarrollo
+
+paths:
+
+  /tickets:
+    get:
+      summary: Obtener lista de tickets
+      description: Retorna todos los tickets de soporte ordenados por prioridad
+      responses:
+        '200':
+          description: Lista de tickets obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      summary: Crear nuevo ticket
+      description: Registra un nuevo ticket de soporte en el sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketRequest'
+            example:
+              title: "Missing sticker packs — Zone 3 CR"
+              description: "200 packs missing from last shipment"
+              priority: "HIGH"
+              supplier: "Distribuidora Centroamérica S.A."
+              category: "INVENTORY"
+      responses:
+        '201':
+          description: Ticket creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /tickets/{id}:
+    get:
+      summary: Obtener detalle de un ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ticket encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /tickets/{id}/status:
+    put:
+      summary: Actualizar estado del ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStatusRequest'
+            example:
+              status: "IN_PROGRESS"
+      responses:
+        '200':
+          description: Estado actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /tickets/{id}/priority:
+    put:
+      summary: Actualizar prioridad del ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePriorityRequest'
+            example:
+              priority: "HIGH"
+      responses:
+        '200':
+          description: Prioridad actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  schemas:
+
+    TicketResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Missing sticker packs — Zone 3 CR"
+        description:
+          type: string
+          example: "200 packs missing from last shipment"
+        priority:
+          type: string
+          enum: [HIGH, MEDIUM, LOW]
+          example: "HIGH"
+        status:
+          type: string
+          enum: [OPEN, IN_PROGRESS, RESOLVED, CLOSED]
+          example: "OPEN"
+        supplier:
+          type: string
+          example: "Distribuidora Centroamérica S.A."
+        category:
+          type: string
+          enum: [INVENTORY, DISTRIBUTION, LOGISTICS, SUPPLIER, OTHER]
+          example: "INVENTORY"
+        createdAt:
+          type: string
+          format: date
+          example: "2026-05-28"
+
+    CreateTicketRequest:
+      type: object
+      required: [title, priority, supplier, category]
+      properties:
+        title:
+          type: string
+          example: "Missing sticker packs — Zone 3 CR"
+        description:
+          type: string
+          example: "200 packs missing from last shipment"
+        priority:
+          type: string
+          enum: [HIGH, MEDIUM, LOW]
+        supplier:
+          type: string
+          example: "Distribuidora Centroamérica S.A."
+        category:
+          type: string
+          enum: [INVENTORY, DISTRIBUTION, LOGISTICS, SUPPLIER, OTHER]
+
+    UpdateStatusRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [OPEN, IN_PROGRESS, RESOLVED, CLOSED]
+
+    UpdatePriorityRequest:
+      type: object
+      required: [priority]
+      properties:
+        priority:
+          type: string
+          enum: [HIGH, MEDIUM, LOW]
+
+  responses:
+    Unauthorized:
+      description: Token inválido o no proporcionado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "UNAUTHORIZED"
+              message:
+                type: string
+                example: "Invalid or missing authentication token"
+
+    BadRequest:
+      description: Datos inválidos en la petición
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "BAD_REQUEST"
+              message:
+                type: string
+                example: "Required fields are missing or invalid"
+
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "NOT_FOUND"
+              message:
+                type: string
+                example: "Ticket not found"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
