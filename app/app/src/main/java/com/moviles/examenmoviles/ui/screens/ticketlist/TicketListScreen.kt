@@ -43,7 +43,7 @@ fun TicketListScreen(
             )
         },
         floatingActionButton = {
-            // FAB solo visible si el flag está activo
+
             if (canCreate) {
                 FloatingActionButton(
                     onClick = onCreateClick,
