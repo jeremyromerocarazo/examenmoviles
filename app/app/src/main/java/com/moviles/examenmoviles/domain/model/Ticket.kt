@@ -1,6 +1,6 @@
 package com.moviles.examenmoviles.domain.model
 
-// Modelo de dominio — lo que usa la UI
+
 data class Ticket(
     val id: Int,
     val title: String,

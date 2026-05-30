@@ -7,7 +7,7 @@ import com.moviles.examenmoviles.data.dto.UpdateTicketStatusRequest
 import retrofit2.Response
 import retrofit2.http.*
 
-// Estructura preparada para cuando exista el backend real
+
 interface ApiService {
 
     @GET("tickets")

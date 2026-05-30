@@ -30,7 +30,7 @@ fun TicketDetailScreen(
     var showStatusDialog by remember { mutableStateOf(false) }
     var showPriorityDialog by remember { mutableStateOf(false) }
 
-    // Diálogo para cambiar estado
+
     if (showStatusDialog) {
         AlertDialog(
             onDismissRequest = { showStatusDialog = false },
@@ -57,7 +57,7 @@ fun TicketDetailScreen(
         )
     }
 
-    // Diálogo para cambiar prioridad
+
     if (showPriorityDialog) {
         AlertDialog(
             onDismissRequest = { showPriorityDialog = false },
@@ -131,7 +131,7 @@ fun TicketDetailScreen(
 
             HorizontalDivider(color = AppBorder)
 
-            // Descripción
+
             Text("Description", style = MaterialTheme.typography.titleMedium)
             Text(text = ticket.description,
                 style = MaterialTheme.typography.bodyLarge,
@@ -139,14 +139,14 @@ fun TicketDetailScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Botón cambiar estado
+
             AppButton(
                 text = "Update Status",
                 onClick = { showStatusDialog = true },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Botón cambiar prioridad — controlado por feature flag
+
             if (canUpdatePriority) {
                 OutlinedButton(
                     onClick = { showPriorityDialog = true },

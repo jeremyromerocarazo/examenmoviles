@@ -2,7 +2,6 @@ package com.moviles.examenmoviles.data.mock
 
 import com.moviles.examenmoviles.domain.model.*
 
-// Mock data con escenarios reales de Panini FIFA 2026
 object MockTickets {
 
     val tickets = mutableListOf(

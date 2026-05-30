@@ -3,7 +3,7 @@ package com.moviles.examenmoviles.data.network
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-// Cliente Retrofit listo para conectar con el backend real
+
 object RetrofitClient {
 
     // Cuando exista el backend, solo cambiar esta URL

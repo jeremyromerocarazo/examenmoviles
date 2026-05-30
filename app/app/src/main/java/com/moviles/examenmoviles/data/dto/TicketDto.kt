@@ -1,6 +1,6 @@
 package com.moviles.examenmoviles.data.dto
 
-// DTO — lo que vendría del backend (preparado para Retrofit)
+
 data class TicketDto(
     val id: Int,
     val title: String,
