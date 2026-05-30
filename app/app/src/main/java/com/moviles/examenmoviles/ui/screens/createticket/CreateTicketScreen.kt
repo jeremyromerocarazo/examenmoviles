@@ -74,7 +74,7 @@ fun CreateTicketScreen(
                 onValueChange = { supplier = it }
             )
 
-            // Selector de prioridad
+
             Text("Priority", style = MaterialTheme.typography.bodyLarge)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Priority.entries.forEach { priority ->
@@ -92,7 +92,7 @@ fun CreateTicketScreen(
                 }
             }
 
-            // Selector de categoría
+
             Text("Category", style = MaterialTheme.typography.bodyLarge)
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Category.entries.forEach { category ->
