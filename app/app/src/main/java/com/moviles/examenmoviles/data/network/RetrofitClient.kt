@@ -6,7 +6,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    // Cuando exista el backend, solo cambiar esta URL
     private const val BASE_URL = "https://api.panini-support.com/v1/"
 
     val apiService: ApiService by lazy {
